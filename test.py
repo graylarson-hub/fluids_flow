@@ -6,17 +6,15 @@ from fluid_plots import (
     plot_streamlines,
     plot_combined,
     source_or_sink,
-    plot_source_sink,
-    source_sink_pair,
-    plot_source_sink_pair
+    plot_source_sink
 )
 
 # --------------------------------------------------
 # Coordinate Grid
 # --------------------------------------------------
 
-x = np.linspace(-2, 3, 151)
-y = np.linspace(-1, 1, 101)
+x = np.linspace(-4, 4, 201)
+y = np.linspace(-4, 4, 201)
 
 X, Y = np.meshgrid(x, y)
 
@@ -78,15 +76,4 @@ plot_combined(
 plot_source_sink(
     X, Y, m, xr, yr,
     levels=24
-)
-
-# Equal source and sink: source at (-0.5, 0), sink at (0.5, 0).
-# angle is in radians; negative m swaps source and sink.
-psi_pair, phi_pair, ux_pair, uy_pair = source_sink_pair(
-    X, Y, m=1.0, separation=1.0, xr=0.0, yr=0.0, angle=0.0
-)
-
-plot_source_sink_pair(
-    X, Y, m=1.0, separation=1.0,
-    levels=25, density=1.5
 )
