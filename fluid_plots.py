@@ -20,34 +20,6 @@ HOW TO IMPORT:
         plot_source_sink_pair
     )
 
-BASIC SETUP:
-    import numpy as np
-
-    x = np.linspace(-5, 5, 201)
-    y = np.linspace(-5, 5, 201)
-
-    X, Y = np.meshgrid(x, y)
-
-    # Define a scalar function
-    def f(X, Y):
-        return X**2 - Y**2
-
-    # Define velocity components
-    def u(X, Y):
-        return 2 * X
-
-    def v(X, Y):
-        return -2 * Y
-    
-    
-    # Stream function
-    def psi(X, Y):
-        return 2 * X * Y
-
-    # Velocity potential
-    def phi(X, Y):
-        return X**2 - Y**2
-
 FUNCTION REFERENCE:
     plot_field(X, Y, f)
         3D surface + 2D contour plot.
@@ -73,20 +45,6 @@ FUNCTION REFERENCE:
     plot_source_sink_pair(X, Y, m, separation=1, xr=0, yr=0, angle=0)
         Overlay pair streamlines (with flow arrows) and equipotentials.
 
-EXAMPLES:
-    plot_field(X, Y, f, title="Scalar Field")
-
-    plot_vector(X, Y, u, v, title="Velocity Field")
-
-    plot_streamlines(X, Y, u, v, density=1.5)
-
-    plot_combined(X, Y, psi, phi, levels=25)
-
-    plot_source_sink(X, Y, m=1.0)   # Positive strength: source
-    plot_source_sink(X, Y, m=-1.0)  # Negative strength: sink
-
-    plot_source_sink_pair(X, Y, m=1.0, separation=1.0)
-
 NOTES:
     - X and Y must be matching 2D meshgrids.
     - Functions should use NumPy-compatible operations.
@@ -94,6 +52,7 @@ NOTES:
       or precomputed NumPy arrays.
     - Use save="filename.png" to export figures at 300 DPI.
 """
+
 
 import numpy as np
 import matplotlib.pyplot as plt
