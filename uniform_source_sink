@@ -15,16 +15,16 @@ X, Y = np.meshgrid(x, y)
 
 # Flow parameters
 
-U = 5        # Uniform flow velocity (m/s)
+U = 8        # Uniform flow velocity (m/s)
 a = 111        # Flow angle in degrees
 aplpha = np.radians(a)  # angle in radians
 
 # Source 1
-m1 = 0.1      # Source strength (m^2/s)
-x1, y1 = -2.0, -3.0
+m1 = 10     # Source strength (m^2/s)
+x1, y1 = 2.0, 0.0
 
 # Source 2
-m2 = -0.3      # Source strength (m^2/s)
+m2 = -10      # Source strength (m^2/s)
 x2, y2 = -1.0, 0.0
 
 

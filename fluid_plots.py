@@ -6,6 +6,7 @@ problem; use axis and colorbar labels to state them. save exports at 300 DPI.
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import Normalize
 from matplotlib.lines import Line2D
 
 __all__ = ["plot_field", "plot_vector", "plot_streamlines", "plot_combined",
@@ -131,12 +132,17 @@ def plot_vector(X, Y, u, v, title="Velocity Field", max_arrows=25,
     u, v = _check_field(u, X.shape), _check_field(v, X.shape)
     if not isinstance(max_arrows, (int, np.integer)) or max_arrows < 1:
         raise ValueError("max_arrows must be a positive integer.")
+    speed = np.hypot(u, v)
+    finite_speed = np.ma.masked_invalid(speed).compressed()
+    # Use the full field, so downsampling and singularities do not set the colors.
+    vmax = np.percentile(finite_speed, 95) if finite_speed.size else 0
+    norm = Normalize(vmin=0, vmax=vmax) if vmax > 0 else None
     sx = max(1, int(np.ceil(X.shape[1] / max_arrows)))
     sy = max(1, int(np.ceil(X.shape[0] / max_arrows)))
     sample = (slice(None, None, sy), slice(None, None, sx))
     fig, ax = plt.subplots(figsize=(9, 7))
     arrows = ax.quiver(X[sample], Y[sample], u[sample], v[sample],
-                       np.hypot(u, v)[sample], cmap=cmap, angles="xy", pivot="mid")
+                       speed[sample], cmap=cmap, norm=norm, angles="xy", pivot="mid")
     fig.colorbar(arrows, ax=ax, label=colorbar_label)
     _finish(fig, [ax], title, xlabel, ylabel, save)
     return fig, ax
@@ -155,9 +161,14 @@ def plot_streamlines(X, Y, u, v, title="Streamlines", density=1.2,
     X, Y = _check_grid(X, Y)
     u, v = _check_field(u, X.shape), _check_field(v, X.shape)
     x, y = _streamplot_grid(X, Y)
+    speed = np.hypot(u, v)
+    finite_speed = np.ma.masked_invalid(speed).compressed()
+    # Limit colors, not velocities; fall back to automatic scaling for zero speed.
+    vmax = np.percentile(finite_speed, 95) if finite_speed.size else 0
+    norm = Normalize(vmin=0, vmax=vmax) if vmax > 0 else None
     fig, ax = plt.subplots(figsize=(9, 7))
-    stream = ax.streamplot(x, y, u, v, color=np.hypot(u, v),
-                           cmap=cmap, density=density)
+    stream = ax.streamplot(x, y, u, v, color=speed,
+                           cmap=cmap, norm=norm, density=density)
     fig.colorbar(stream.lines, ax=ax, label=colorbar_label)
     _finish(fig, [ax], title, xlabel, ylabel, save)
     return fig, ax

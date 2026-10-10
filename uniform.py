@@ -12,7 +12,7 @@ y = np.linspace(-5, 5, 150)
 X, Y = np.meshgrid(x, y)
 
 # Uniform flow
-U = 2.0              # m/s
+U = 2.0     ]    # m/s
 angle = np.radians(30)
 
 # Velocity components
