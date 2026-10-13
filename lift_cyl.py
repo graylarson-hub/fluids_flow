@@ -14,9 +14,9 @@ X, Y = np.meshgrid(x, y)
 # Parameters #########################
 
 U = 4.5                 # Freestream velocity (m/s)
-alpha = np.radians(26)    # Flow angle (degrees)
+alpha = np.radians(0)    # Flow angle (degrees)
 R = 1.4                  # Cylinder radius (m)
-Gamma = -12.0             # Circulation (m^2/s)
+Gamma = -20.0             # Circulation (m^2/s)
 rho = 1.333              # Air density (kg/m^3)
 
 

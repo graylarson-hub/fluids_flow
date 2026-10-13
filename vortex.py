@@ -1,5 +1,4 @@
 import numpy as np
-
 from fluid_plots import plot_vector, plot_streamlines, plot_field
 
 
@@ -13,7 +12,8 @@ X, Y = np.meshgrid(x, y)
 
 Gamma = -7.0        # Circulation (m^2/s)
 xc, yc = 1.0, 0.5    # Vortex center (m)
-core_radius = 0.1   # Excluded region near singularity (m)
+
+core_radius = 0.25   # Excluded region near singularity (m)
 
 
 # Radial distance ####################
