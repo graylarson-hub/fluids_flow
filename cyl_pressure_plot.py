@@ -28,7 +28,7 @@ theta_deg = np.degrees(theta)
 
 fig, ax = plt.subplots(figsize=(9, 6))
 
-for Gamma in gamma_values:
+for Gamma, line_style in zip(gamma_values, ["-", "--", "-.", ":", (0, (5, 2, 1, 2))]):
 
     # Tangential velocity on the cylinder surface
     vt = -2*U*np.sin(theta) + Gamma/(2*np.pi*R)
@@ -51,7 +51,8 @@ for Gamma in gamma_values:
     print(f"Lift (theoretical): {lift_theory:.3f} N/m")
     print(f"Drag (integrated): {drag:.3f} N/m")
 
-    ax.plot(theta_deg, Cp, label=f"Gamma = {Gamma:g}")
+    ax.plot(theta_deg, Cp, linestyle=line_style, linewidth=1.3,
+            label=f"Gamma = {Gamma:g} m²/s")
 
 
 # Plot formatting ####################
@@ -62,7 +63,7 @@ ax.set_ylabel("Pressure Coefficient, Cp")
 
 ax.set_xticks(np.arange(0, 361, 45))
 ax.axhline(0, color="gray", linewidth=0.8)
-ax.legend()
+ax.legend(fontsize=9)
 ax.grid(True, alpha=0.3)
 
 # Conventional aerodynamic Cp plots have negative Cp upward

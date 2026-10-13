@@ -1,6 +1,8 @@
 """Uniform flow plus a doublet around an impermeable, nonlifting cylinder."""
 
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 
 from fluid_plots import plot_vector, plot_streamlines, plot_combined
 
@@ -59,25 +61,40 @@ phi = np.ma.masked_where(inside, phi)
 
 # Plot results #######################
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_vector(
     X, Y, u, v,
+    ax=ax,
+    color="#203345",
     title="Velocity Field Around a Cylinder",
     xlabel="x (m)",
     ylabel="y (m)",
-    colorbar_label="Velocity (m/s)"
+    colorbar_label="Speed (m/s)"
 )
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_streamlines(
     X, Y, u, v,
+    ax=ax,
+    linewidth=0.85, arrowsize=0.8,
+    color="#203345",
     title="Potential Flow Around a Cylinder",
     density=1.5,
     xlabel="x (m)",
     ylabel="y (m)",
-    colorbar_label="Velocity (m/s)"
+    colorbar_label="Speed (m/s)"
 )
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_combined(
     X, Y, psi, phi,
+    ax=ax,
     title="Streamlines and Equipotential Lines",
     xlabel="x (m)",
     ylabel="y (m)"

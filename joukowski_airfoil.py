@@ -73,29 +73,29 @@ zeta = z + a**2/z
 
 # Plot streamlines ####################
 
-fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+fig, axes = plt.subplots(1, 2, figsize=(18, 7))
 
-levels = np.linspace(-4*U*a, 4*U*a, 41)
+levels = np.linspace(-4*U*a, 4*U*a, 61)
 
 # Original cylinder flow
 axes[0].contour(
     z.real, z.imag, psi,
-    levels=levels, colors="C0", linestyles="solid"
+    levels=levels, colors="#203345", linewidths=0.55, linestyles="solid"
 )
 axes[0].fill(
     circle.real, circle.imag,
-    color="lightgray", edgecolor="black"
+    facecolor="#d6d8da", edgecolor="#26313c", linewidth=1.2, zorder=6
 )
 axes[0].set_title("Original Cylinder Flow")
 
 # Transformed airfoil flow
 axes[1].contour(
     zeta.real, zeta.imag, psi,
-    levels=levels, colors="C0", linestyles="solid"
+    levels=levels, colors="#203345", linewidths=0.55, linestyles="solid"
 )
 axes[1].fill(
     airfoil.real, airfoil.imag,
-    color="lightgray", edgecolor="black"
+    facecolor="#d6d8da", edgecolor="#26313c", linewidth=1.2, zorder=6
 )
 axes[1].set_title("Joukowski Airfoil Flow")
 
@@ -105,7 +105,7 @@ for ax in axes:
     ax.set_xlim(-4, 4)
     ax.set_ylim(-3, 3)
     ax.set_aspect("equal")
-    ax.grid(True, alpha=0.2)
+    ax.tick_params(direction="in", top=True, right=True)
 
 fig.tight_layout()
 plt.show()

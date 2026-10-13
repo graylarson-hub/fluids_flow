@@ -1,4 +1,4 @@
-﻿"""Simple array-based engineering plots using NumPy and Matplotlib.
+"""Simple array-based engineering plots using NumPy and Matplotlib.
 
 Coordinates and fields must be matching 2D arrays. Units depend on the
 problem; use axis and colorbar labels to state them. save exports at 300 DPI.
@@ -93,17 +93,20 @@ def source_or_sink(X, Y, m, xr=0.0, yr=0.0):
 
 def plot_field(X, Y, field, title="Scalar Field", levels=20,
                cmap="viridis", save=None, *, surface=False,
-               xlabel="X", ylabel="Y", colorbar_label="Field"):
+               xlabel="X", ylabel="Y", colorbar_label="Field", ax=None):
     """Plot a precomputed scalar field on matching 2D X, Y arrays.
 
     levels is a contour count or increasing sequence; surface adds a 3D
     panel. Labels may include problem-specific units; save exports at
     300 DPI. Returns (fig, ax), or (fig, (surface_ax, contour_ax)) when
-    surface=True. Nonfinite field values are masked.
+    surface=True. Nonfinite field values are masked. Supply ax for prepared
+    2D axes; ax cannot be combined with surface=True.
     """
     X, Y = _check_grid(X, Y)
     field = _check_field(field, X.shape)
     if surface:
+        if ax is not None:
+            raise ValueError("A supplied ax cannot be used with surface=True.")
         fig = plt.figure(figsize=(14, 6))
         surface_ax = fig.add_subplot(1, 2, 1, projection="3d")
         ax = fig.add_subplot(1, 2, 2)
@@ -112,8 +115,10 @@ def plot_field(X, Y, field, title="Scalar Field", levels=20,
                        zlabel=colorbar_label)
         fig.colorbar(surf, ax=surface_ax, shrink=0.6, label=colorbar_label)
         fig.suptitle(title)
-    else:
+    elif ax is None:
         fig, ax = plt.subplots(figsize=(9, 7))
+    else:
+        fig = ax.figure
     filled = ax.contourf(X, Y, field, levels=levels, cmap=cmap)
     fig.colorbar(filled, ax=ax, label=colorbar_label)
     _finish(fig, [ax], "2D Contour" if surface else title, xlabel, ylabel, save)
@@ -122,10 +127,12 @@ def plot_field(X, Y, field, title="Scalar Field", levels=20,
 
 def plot_vector(X, Y, u, v, title="Velocity Field", max_arrows=25,
                 cmap="viridis", save=None, *, xlabel="X", ylabel="Y",
-                colorbar_label="Velocity Magnitude"):
+                colorbar_label="Velocity Magnitude", color=None, ax=None):
     """Quiver plot of precomputed u, v arrays matching 2D X, Y.
 
     Arrows are colored by magnitude, with at most max_arrows per axis.
+    color selects a constant arrow color without a colorbar; None keeps the
+    established speed coloring. Supply ax to draw on prepared 2D axes.
     Labels may include units; save exports at 300 DPI. Returns (fig, ax).
     """
     X, Y = _check_grid(X, Y)
@@ -140,23 +147,35 @@ def plot_vector(X, Y, u, v, title="Velocity Field", max_arrows=25,
     sx = max(1, int(np.ceil(X.shape[1] / max_arrows)))
     sy = max(1, int(np.ceil(X.shape[0] / max_arrows)))
     sample = (slice(None, None, sy), slice(None, None, sx))
-    fig, ax = plt.subplots(figsize=(9, 7))
-    arrows = ax.quiver(X[sample], Y[sample], u[sample], v[sample],
-                       speed[sample], cmap=cmap, norm=norm, angles="xy", pivot="mid")
-    fig.colorbar(arrows, ax=ax, label=colorbar_label)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(9, 7))
+    else:
+        fig = ax.figure
+    if color is None:
+        arrows = ax.quiver(X[sample], Y[sample], u[sample], v[sample],
+                           speed[sample], cmap=cmap, norm=norm,
+                           angles="xy", pivot="mid")
+        fig.colorbar(arrows, ax=ax, label=colorbar_label)
+    else:
+        ax.quiver(X[sample], Y[sample], u[sample], v[sample],
+                  color=color, angles="xy", pivot="mid")
     _finish(fig, [ax], title, xlabel, ylabel, save)
     return fig, ax
 
 
 def plot_streamlines(X, Y, u, v, title="Streamlines", density=1.2,
                      cmap="viridis", save=None, *, xlabel="X", ylabel="Y",
-                     colorbar_label="Velocity Magnitude"):
+                     colorbar_label="Velocity Magnitude", color=None,
+                     linewidth=None, arrowsize=1, ax=None):
     """Streamlines of precomputed u, v arrays matching 2D X, Y.
 
     X, Y must form an increasing, equally spaced rectangular meshgrid.
     density controls line spacing; color shows speed. Labels may include
     units; save exports at 300 DPI. Returns (fig, ax). Masked singularities
     interrupt numerical streamlines; no stream function is required.
+    color selects a constant line color and omits the colorbar;
+    None preserves speed coloring. linewidth/arrowsize pass through to Matplotlib.
+    Supply ax to prepare geometry/annotations before display or saving.
     """
     X, Y = _check_grid(X, Y)
     u, v = _check_field(u, X.shape), _check_field(v, X.shape)
@@ -166,16 +185,21 @@ def plot_streamlines(X, Y, u, v, title="Streamlines", density=1.2,
     # Limit colors, not velocities; fall back to automatic scaling for zero speed.
     vmax = np.percentile(finite_speed, 95) if finite_speed.size else 0
     norm = Normalize(vmin=0, vmax=vmax) if vmax > 0 else None
-    fig, ax = plt.subplots(figsize=(9, 7))
-    stream = ax.streamplot(x, y, u, v, color=speed,
-                           cmap=cmap, norm=norm, density=density)
-    fig.colorbar(stream.lines, ax=ax, label=colorbar_label)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(9, 7))
+    else:
+        fig = ax.figure
+    stream = ax.streamplot(x, y, u, v, color=speed if color is None else color,
+                           cmap=cmap, norm=norm, density=density,
+                           linewidth=linewidth, arrowsize=arrowsize)
+    if color is None:
+        fig.colorbar(stream.lines, ax=ax, label=colorbar_label)
     _finish(fig, [ax], title, xlabel, ylabel, save)
     return fig, ax
 
 
 def plot_combined(X, Y, psi, phi, title="Flow Visualization", levels=20,
-                  save=None, *, xlabel="X", ylabel="Y"):
+                  save=None, *, xlabel="X", ylabel="Y", ax=None):
     """Overlay precomputed psi and phi arrays matching 2D X, Y.
 
     Blue contours show psi; orange dashed contours show phi. levels is
@@ -184,10 +208,14 @@ def plot_combined(X, Y, psi, phi, title="Flow Visualization", levels=20,
     Use u=psi_y=phi_x, v=-psi_x=phi_y; a potential requires irrotational
     flow locally, whereas a stream function requires 2D incompressibility.
     Mask angular branch cuts before contouring discontinuous fields.
+    Supply ax to add physical geometry before display or saving.
     """
     X, Y = _check_grid(X, Y)
     psi, phi = _check_field(psi, X.shape), _check_field(phi, X.shape)
-    fig, ax = plt.subplots(figsize=(9, 7))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(9, 7))
+    else:
+        fig = ax.figure
     ax.contour(X, Y, psi, levels=levels, colors="royalblue", linewidths=1.2)
     ax.contour(X, Y, phi, levels=levels, colors="darkorange",
                linewidths=1.2, linestyles="dashed")

@@ -4,6 +4,8 @@ Positive circulation is counterclockwise; the cylinder interior is excluded.
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 
 from fluid_plots import plot_vector, plot_streamlines, plot_field
 
@@ -80,16 +82,26 @@ print(f"Lift per unit length, y: {lift_y:.3f} N/m")
 
 # Visualizations #####################
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_vector(
     X, Y, u, v,
+    ax=ax,
     title="Cylinder with Circulation: Velocity Field",
     xlabel="x (m)",
     ylabel="y (m)",
     colorbar_label="Speed (m/s)"
 )
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_streamlines(
     X, Y, u, v,
+    ax=ax,
+    linewidth=0.85, arrowsize=0.8,
+    cmap="viridis",
     title="Potential Flow Around a Lifting Cylinder",
     density=1.5,
     xlabel="x (m)",
@@ -97,8 +109,12 @@ plot_streamlines(
     colorbar_label="Speed (m/s)"
 )
 
+fig, ax = plt.subplots(figsize=(8, 7))
+ax.add_patch(Circle((0, 0), R, facecolor="#d6d8da",
+                    edgecolor="#39434d", linewidth=1.2, zorder=6))
 plot_field(
     X, Y, Cp,
+    ax=ax,
     title="Pressure Coefficient Around Cylinder",
     xlabel="x (m)",
     ylabel="y (m)",

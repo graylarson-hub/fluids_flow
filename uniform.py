@@ -26,9 +26,12 @@ psi = U * (Y * np.cos(angle) - X * np.sin(angle))
 phi = U * (X * np.cos(angle) + Y * np.sin(angle))
 
 # Plots
-plot_vector(X, Y, u, v, title="Uniform Velocity Field")
+plot_vector(X, Y, u, v, title="Uniform Velocity Field",
+            color="#203345", xlabel="x (m)", ylabel="y (m)")
 
-plot_streamlines(X, Y, u, v, title="Uniform Flow Streamlines")
+plot_streamlines(X, Y, u, v, title="Uniform Flow Streamlines",
+                 color="#203345", linewidth=0.85, arrowsize=0.8,
+                 xlabel="x (m)", ylabel="y (m)")
 
 plot_combined(
     X, Y, psi, phi,
