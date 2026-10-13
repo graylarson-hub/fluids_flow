@@ -35,13 +35,13 @@ Optional `ax` on the four plot functions supports a caller-prepared 2D axis. Thi
 
 ## Review images
 
-All review artifacts are ignored under `figures/phase3_final_review/`.
+Original review artifacts are ignored under `figures/phase3_final_review/`. The public final exports linked below are tracked under `assets/`.
 
-- [Final labeled overview](../figures/phase3_final_review/final_overview.png)
-- [Auxiliary vector/scalar/combined overview](../figures/phase3_final_review/supplemental_overview.png)
-- [Two-panel transformation](../figures/phase3_final_review/after_joukowski_airfoil_1.png)
-- [Standalone airfoil detail](../figures/phase3_final_review/final_airfoil_detail.png)
-- [Final thin Rankine oval](../figures/phase3_final_review/final_rankine_thin.png)
+- [Final selected-example gallery](../assets/gallery_overview.png) (later Phase 4 exports)
+- Auxiliary vector/scalar/combined review sheets remain local-only; the demonstration scripts retain those plots.
+- The two-panel transformation review remains local-only; [joukowski_airfoil.py](../joukowski_airfoil.py) displays the original circle and transformed airfoil together.
+- [Final standalone airfoil export](../assets/hero_joukowski_airfoil.png)
+- The thin-oval review image remains local-only; its numerical results are recorded above. Public assets show the default [Rankine geometry](../assets/rankine_oval.png) and [explanatory exterior flow](../assets/rankine_oval_streamlines_explanatory.png).
 - Individual 300 DPI figures: `after_<script>_<number>.png` (19 total).
 - Seven 200 DPI before/after sheets: `compare_<script>.png`; individual baseline exports are also retained.
 - Reproduction/check scripts and JSON results: `review.py`, `gallery.py`, `validate_styles.py`, `validate_rankine.py`, `validate_physics.py` and adjacent JSON files. Baseline Python copies/hashes are ignored review snapshots.

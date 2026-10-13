@@ -51,16 +51,16 @@ An angled uniform stream combines with a point source and sink to change the loc
 
 ## Getting started
 
-Use Python 3 with **NumPy 2.0 or newer** and Matplotlib. The pressure-integration example uses `np.trapezoid`, introduced in NumPy 2.0. The checked environment is Python **3.14.7**, NumPy **2.5.3** and Matplotlib **3.11.2**; other version combinations have not been verified here.
+Use Python 3 with **NumPy 2.0 or newer** and **Matplotlib 3.8 or newer**. The pressure-integration example uses `np.trapezoid`, introduced in NumPy 2.0. The fresh-environment check used Windows, Python **3.14.7**, NumPy **2.5.4** and Matplotlib **3.11.2**; other version combinations have not been verified here.
 
 From the repository root, using a Python environment of your choice:
 
 ```sh
-python -m pip install "numpy>=2.0" matplotlib
+python -m pip install -r requirements.txt
 python joukowski_airfoil.py
 ```
 
-Alternatively, install the declared dependencies with `python -m pip install -r requirements.txt`. Scripts import the adjacent `fluid_plots.py` directly; no package installation is needed for that module. Matplotlib opens figure windows; close each window to advance through examples with several figures. Demonstrations execute when run or imported and do not save figures by default.
+Scripts import the adjacent `fluid_plots.py` directly; no package installation is needed for that module. Matplotlib opens figure windows; close each window to advance through examples with several figures. Demonstrations execute when run or imported and do not save figures by default.
 
 A minimal call using precomputed arrays:
 
@@ -93,7 +93,7 @@ Single-color streamlines suit uniform speed: a colorbar would add no spatial inf
 | `plot_combined()` | Stream-function and velocity-potential contours on one axis |
 | `source_or_sink()` | Evaluate a point source/sink; return `(psi, phi, ur, ux, uy)` |
 
-The four plotting functions accept matching, precomputed 2D NumPy arrays and return a figure and axis (two axes for `plot_field(surface=True)`). Streamplots require an increasing, equally spaced rectangular meshgrid. The demonstration scripts calculate the physics; the plotters display supplied fields. Labels, prepared axes and optional 300 DPI saving are supported.
+The four plotting functions accept matching, precomputed 2D NumPy arrays and return a figure and axis (two axes for `plot_field(surface=True)`). Streamplots require an increasing, equally spaced rectangular meshgrid. Labels, prepared axes and optional 300 DPI saving are supported. Full signatures and input requirements are in the [plotting API reference](docs/plotting_api.md).
 
 Speed colors normally span zero to the 95th percentile of the full finite, unmasked field, including before vector downsampling. Larger speeds share the endpoint color without numerical clipping. The source/sink streamline example alone uses a local P10-P95 interval, approximately **7.659-8.990 m/s** on its current grid; its colorbar extensions identify both saturated tails. Constant-color plots omit speed colorbars. See the [asset report](docs/phase4a_assets.md) for export-specific settings, including the exterior-only Rankine view.
 
@@ -123,19 +123,11 @@ $L_y'$ is signed lift per unit span in $\mathrm{N/m}$. This sign matches the pre
 
 The Joukowski map $\zeta=z+a^2/z$ transforms the exterior of an offset circle into an airfoil domain. The complex potential combines uniform flow, a doublet and circulation. Choosing $\Gamma=4\pi RU\sin(\theta_{te}-\alpha)$ enforces the Kutta condition at the circle point mapped to the trailing edge. It cancels the velocity numerator where the mapping derivative vanishes, giving a finite mapped limit. The current demonstration plots mapped streamlines; it does **not** calculate airfoil pressure or lift.
 
-## Numerical validation
-
-[Phase 2 validation](docs/phase2_validation.md) evaluated **225 parameter/check cases** across the active models. No active physics-equation error was found within the tested ranges. Checks compared numerical derivatives with analytical velocities, continuity and irrotationality away from singularities, source flux, vortex circulation, Rankine stagnation points, cylinder boundary conditions, pressure-integrated forces and Joukowski transformed velocities/trailing-edge behavior.
-
-Representative results include a maximum cylinder force discrepancy of **1.705e-13 N/m** and a mapped Joukowski velocity derivative discrepancy of **1.268e-10 m/s**. Smooth-field derivative errors decreased approximately with grid spacing squared. These results depend on the stated parameters, exclusion regions and numerical checks; the near-exact cylinder force result reflects smooth periodic integrands rather than general pressure-integration accuracy.
-
-The investigation also identified a thin-oval branch-cut plotting failure. [Phase 3A](docs/phase3a_review.md) corrected it using a grid-aware cut mask and resolution checks, with equations unchanged. The full report records tested ranges, convergence and remaining qualifications; this is not a claim of universal accuracy or a packaged automated test suite.
-
 ## Limitations
 
 **Physical model:** These are two-dimensional, inviscid, locally irrotational models with idealized geometries. They cannot predict viscous boundary layers, separation, real aerodynamic drag or stall. The imposed Kutta condition selects a trailing-edge solution; it does not simulate viscosity. Point sources, sinks and vortices remain mathematical singularities.
 
-**Numerical visualization:** Masks exclude unresolved samples without regularizing the equations. Branch cuts require special contour treatment, and thin Rankine geometries require sufficient grid resolution. Streamline tracing can leave gaps; percentile colors saturate extreme speeds, and yellow viridis lines have weaker contrast on white. Sampled geometry and contour interpolation limit trailing-edge detail. A shaded Rankine interior is a visualization exclusion, not a new physical solution.
+**Numerical visualization:** Masks exclude unresolved samples without regularizing the equations. Branch cuts require special contour treatment, and thin Rankine geometries require sufficient grid resolution. Streamline tracing can leave gaps; percentile colors saturate extreme speeds, and yellow viridis lines have weaker contrast on white. Sampled geometry and contour interpolation limit trailing-edge detail. The shaded Rankine interior is excluded only in the featured export; `rankine.py` retains the complete superposition.
 
 ## Source files and documentation
 
@@ -150,12 +142,17 @@ The investigation also identified a thin-oval branch-cut plotting failure. [Phas
 | [cyl_pressure_plot.py](cyl_pressure_plot.py) | Cylinder surface pressure and integrated lift/drag for several circulations |
 | [joukowski_airfoil.py](joukowski_airfoil.py) | Original-circle and transformed-airfoil stream-function contours |
 
-`fun.py` and `test.py` are retained rotational-flow experiments, not finished potential-flow features; `test.py` is not a test suite.
-
 - [Repository audit](docs/phase1_audit.md)
-- [Mathematical validation](docs/phase2_validation.md)
+- [Mathematical reference](docs/mathematical_reference.md)
+- [Plotting API reference](docs/plotting_api.md)
 - [Plotting corrections](docs/phase3a_review.md)
 - [Final styles and local color normalization](docs/phase3c_review.md)
 - [Featured assets and export verification](docs/phase4a_assets.md)
 
+**Numerical verification:** The analytical flow models were checked against numerical derivatives, boundary conditions, circulation, stagnation-point locations and pressure-integrated forces. Detailed results and tested ranges are available in the [validation report](docs/phase2_validation.md).
+
 High-resolution public-facing figures are in `assets/`. Local comparison figures and export runners are under ignored `figures/` and are not included in a fresh checkout.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

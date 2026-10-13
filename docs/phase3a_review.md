@@ -129,12 +129,12 @@ can remain in raw arrays by design. Uniform or general arrays passed directly to
 
 ## Review artifacts and Phase 3B
 
-All files below are ignored by the existing `figures/` rule:
+Original comparison/diagnostic artifacts remain ignored under `figures/`. The public final assets linked below are tracked under `assets/`:
 
-- [Eight-model overview](../figures/phase3_review/after_overview.png)
-- [Scalar, vector, and combined details](../figures/phase3_review/after_detail_overview.png)
-- [Thin oval: old versus corrected mask](../figures/phase3_review/rankine_thin_comparison.png)
-- [Near-center arrows: raw versus masked](../figures/phase3_review/singularity_comparison.png)
+- [Final selected-example gallery](../assets/gallery_overview.png) (later Phase 4 exports, not the original eight-model review sheet)
+- Scalar/vector/combined detail sheets remain local-only; their findings are summarized in the visual review above.
+- The thin-oval before/after comparison remains local-only; the Rankine correction above records its parameters and results. The [final geometry asset](../assets/rankine_oval.png) shows the default oval rather than that thin test case.
+- The near-center raw/masked arrow comparison remains local-only; the singularity investigation above explains the demonstrated arrow-scaling problem and correction.
 - Full-resolution examples: `after_<script>_<figure-number>.png` (300 DPI), with
   corresponding `before_...` files. Examples include `after_cyl_pressure_plot_1.png`
   and `after_joukowski_airfoil_1.png`.

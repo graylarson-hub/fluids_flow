@@ -13,3 +13,7 @@ env/
 figures/
 *.tmp
 *.log
+
+# Personal experimental scratchpads (repository root only)
+/fun.py
+/test.py
