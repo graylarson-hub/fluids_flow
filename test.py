@@ -1,20 +1,21 @@
+"""Exploratory rotational-flow example, not an automated test suite.
+
+u=3y, v=2x is incompressible, with vorticity -1 in consistent units.
+The unused phi placeholder and commented experiments are unfinished.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 from fluid_plots import (
-    plot_field,
     plot_vector,
     plot_streamlines,
-    plot_combined,
-    source_or_sink,
-    source_sink_pair,
-    plot_source_sink,
-    plot_source_sink_pair,
 )
 
-# --------------------------------------------------
-# Coordinate Grid
-# --------------------------------------------------
+# Archived experiments below refer to removed specialized plotting functions.
+# Their original implementations remain in Git history; they are not active API.
+
+# Coordinate grid ####################
 
 N = 400
 xmin = -5
@@ -35,9 +36,7 @@ m = 1
 xr = -2.0
 yr = 0.0
 
-# --------------------------------------------------
-# Velocity Components
-# --------------------------------------------------
+# Velocity components ################
 
 # def u_uni(X, Y):
 #     return a*np.cos(c)
@@ -51,9 +50,7 @@ def v(X, Y):
     return 2 * X
 
 
-# --------------------------------------------------
-# Stream Function and Velocity Potential
-# --------------------------------------------------
+# Stream function and unfinished potential experiment ####################
 
 def psi(X, Y):
     return 3/2 * Y**2 - X**2 
@@ -63,21 +60,22 @@ def phi(X, Y):
 
 # psi_source, phi_source, ur_source, ux_source, uy_source = source_or_sink(X, Y, m, xr, yr)
 
-# --------------------------------------------------
-# Generate Plots
-# --------------------------------------------------
+# Generate plots #####################
+
+U = u(X, Y)
+V = v(X, Y)
 
 # plot_field(
 #     X, Y, phi_source, title="Source/Sink Velocity Potential"
 # )
 
 plot_vector(
-    X, Y, u, v,
+    X, Y, U, V,
     title="Velocity Vector Field"
 )
 
 plot_streamlines(
-    X, Y, u, v,
+    X, Y, U, V,
     title="Streamline Visualization",
     density=1.5
 )

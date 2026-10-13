@@ -1,2 +1,15 @@
 Lectures/
 Quizzes_HW/
+Quizes_HW/
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Generated figures and temporary outputs
+figures/
+*.tmp
+*.log

@@ -1,3 +1,5 @@
+"""Rankine oval from uniform flow plus an equal-strength source/sink pair."""
+
 import numpy as np
 import matplotlib.pyplot as plt
 

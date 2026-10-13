@@ -1,3 +1,8 @@
+"""Map circulating cylinder flow to a Joukowski airfoil using a complex potential.
+
+The circulation enforces zero tangential cylinder velocity at the trailing edge.
+This example plots stream-function contours, not airfoil pressure or lift."""
+
 import numpy as np
 import matplotlib.pyplot as plt
 

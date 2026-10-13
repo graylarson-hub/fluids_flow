@@ -1,3 +1,8 @@
+"""Cylinder surface pressure and pressure-integrated forces per unit span.
+
+Positive circulation is counterclockwise; flow along +x gives negative lift.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 

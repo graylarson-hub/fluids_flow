@@ -1,7 +1,8 @@
-import numpy as np
-import matplotlib.pyplot as plt
+"""Uniform flow plus a doublet around an impermeable, nonlifting cylinder."""
 
-from fluid_plots import plot_vector, plot_streamlines, plot_field, plot_combined
+import numpy as np
+
+from fluid_plots import plot_vector, plot_streamlines, plot_combined
 
 
 # Coordinate grid ####################

@@ -1,3 +1,7 @@
+"""Ideal cylinder flow with circulation, pressure coefficient, and lift.
+
+Positive circulation is counterclockwise; the cylinder interior is excluded.
+"""
 
 import numpy as np
 

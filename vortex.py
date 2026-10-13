@@ -1,3 +1,7 @@
+"""Ideal free vortex with an excluded core and a numerical vorticity check.
+
+The excluded region is a plotting mask, not a finite-core vortex model."""
+
 import numpy as np
 from fluid_plots import plot_vector, plot_streamlines, plot_field
 

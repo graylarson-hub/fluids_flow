@@ -1,3 +1,9 @@
+"""Rotational incompressible flow: u=3y, v=2x; no velocity potential.
+
+Coordinates and coefficients use a consistent, unspecified unit system.
+This overlaps the exploratory test.py script and is retained for comparison.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -34,13 +40,13 @@ PSI = psi(X, Y)
 
 # Velocity vectors
 plot_vector(
-    X, Y, u, v,
+    X, Y, U, V,
     title="Velocity Vector Field"
 )
 
 # Streamlines
 plot_streamlines(
-    X, Y, u, v,
+    X, Y, U, V,
     title="Streamline Visualization",
     density=1.5
 )
